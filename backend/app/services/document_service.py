@@ -8,6 +8,7 @@ from app.schemas.document import PDFDocumentModel
 from app.pdf.extractor import PDFExtractor
 from app.pdf.modifier import PDFModifier
 from app.validation.operation_validator import OperationValidator
+from app.services.storage_service import StorageService
 from app.config import settings
 
 class DocumentService:
@@ -21,6 +22,9 @@ class DocumentService:
         original_path = str(doc_dir / "revision_0.pdf")
         with open(original_path, "wb") as f:
             f.write(file_bytes)
+
+        # Sync to Cloudflare R2 if configured
+        StorageService.upload_file(original_path, f"{doc_id}/revision_0.pdf")
 
         # Extract initial state
         extracted_doc = PDFExtractor.extract_document(original_path, doc_id, clean_filename, current_revision=0)
