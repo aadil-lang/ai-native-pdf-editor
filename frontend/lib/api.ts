@@ -7,17 +7,26 @@ export async function uploadPdf(file: File): Promise<PDFDocumentModel> {
   const formData = new FormData();
   formData.append('file', file);
 
-  const res = await fetch(`${API_BASE_URL}/documents/upload`, {
-    method: 'POST',
-    body: formData,
-  });
+  try {
+    const res = await fetch(`${API_BASE_URL}/documents/upload`, {
+      method: 'POST',
+      body: formData,
+    });
 
-  if (!res.ok) {
-    const err = await res.json();
-    throw new Error(err.detail || 'Failed to upload PDF');
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.detail || 'Failed to upload PDF');
+    }
+
+    return res.json();
+  } catch (err: any) {
+    if (err.message === 'Failed to fetch' || err.name === 'TypeError') {
+      throw new Error(
+        `Cannot connect to PaperForge Backend API at (${API_BASE_URL}). Please deploy your backend container (Koyeb/Render) and set NEXT_PUBLIC_API_URL in Cloudflare environment variables.`
+      );
+    }
+    throw err;
   }
-
-  return res.json();
 }
 
 export async function getDocument(docId: string, revision?: number): Promise<PDFDocumentModel> {
