@@ -46,6 +46,10 @@ export const EditingOverlay: React.FC<EditingOverlayProps> = ({ page, scale, onO
       pageNumber: page.page_number,
       data: span,
     });
+    if (activeTool === 'edit_text') {
+      setEditingSpanId(span.id);
+      setInlineText(span.text);
+    }
   };
 
   const handleSpanDoubleClick = (span: PDFTextSpan, e: React.MouseEvent) => {
@@ -234,13 +238,21 @@ export const EditingOverlay: React.FC<EditingOverlayProps> = ({ page, scale, onO
       className={`absolute inset-0 select-none ${
         activeTool === 'select'
           ? 'cursor-default'
-          : activeTool === 'text'
+          : activeTool === 'edit_text' || activeTool === 'text'
           ? 'cursor-text'
           : activeTool === 'draw'
           ? 'cursor-crosshair'
           : 'cursor-crosshair'
       }`}
     >
+      {/* Edit Text Mode Banner Indicator */}
+      {activeTool === 'edit_text' && (
+        <div className="absolute top-2 right-2 bg-indigo-600/90 backdrop-blur text-white text-[11px] font-semibold px-3 py-1 rounded-md shadow-md z-40 flex items-center gap-1.5 pointer-events-none">
+          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+          Edit Text Mode: Click any text to edit inline
+        </div>
+      )}
+
       {/* Interactive Floating Formatting Toolbar for Selected Text */}
       {selectedSpan && selectedSpanScreenRect && (
         <FormattingToolbar
@@ -268,7 +280,7 @@ export const EditingOverlay: React.FC<EditingOverlayProps> = ({ page, scale, onO
               width: `${sRect.width}px`,
               height: `${sRect.height}px`,
             }}
-            title={`Text: "${span.text}" (Double click to edit / Click to inspect)`}
+            title={`Text: "${span.text}" (${activeTool === 'edit_text' ? 'Click to edit' : 'Double click to edit'})`}
             className={`absolute transition-all border ${
               isEditing
                 ? 'z-30 ring-2 ring-indigo-600 bg-white'
@@ -276,6 +288,8 @@ export const EditingOverlay: React.FC<EditingOverlayProps> = ({ page, scale, onO
                 ? 'border-indigo-600 bg-indigo-500/10 z-20 shadow-xs'
                 : searchHit
                 ? 'border-yellow-500 bg-yellow-400/40 z-10 animate-pulse'
+                : activeTool === 'edit_text'
+                ? 'border-indigo-400/50 bg-indigo-500/5 hover:border-indigo-600 hover:bg-indigo-500/20 shadow-2xs cursor-text'
                 : 'border-transparent hover:border-indigo-400/60 hover:bg-indigo-500/5'
             }`}
           >

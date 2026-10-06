@@ -3,7 +3,7 @@ import { PDFDocumentModel, PDFTextSpan, PDFImageObject } from '@/types/pdf';
 import { EditOperation } from '@/types/operations';
 import { executeOperations, restoreRevision } from '@/lib/api';
 
-export type ToolType = 'select' | 'text' | 'image' | 'highlight' | 'draw' | 'shape' | 'signature' | 'redact';
+export type ToolType = 'select' | 'edit_text' | 'text' | 'image' | 'highlight' | 'draw' | 'shape' | 'signature' | 'redact';
 
 export interface SelectedObject {
   id: string;

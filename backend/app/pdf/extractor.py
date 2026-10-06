@@ -215,11 +215,14 @@ class PDFExtractor:
         )
 
     @staticmethod
-    def render_page_image(filepath: str, page_number: int, zoom: float = 1.5) -> bytes:
+    def render_page_image(filepath: str, page_number: int, zoom: float = 1.5, format: str = "jpeg") -> bytes:
         doc = fitz.open(filepath)
         page = doc.load_page(page_number - 1)
         matrix = fitz.Matrix(zoom, zoom)
         pix = page.get_pixmap(matrix=matrix, alpha=False)
-        img_bytes = pix.tobytes("png")
+        if format.lower() in ["jpg", "jpeg"]:
+            img_bytes = pix.tobytes("jpeg", jpg_quality=85)
+        else:
+            img_bytes = pix.tobytes("png")
         doc.close()
         return img_bytes

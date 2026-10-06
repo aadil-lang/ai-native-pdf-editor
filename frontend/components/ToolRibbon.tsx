@@ -3,6 +3,7 @@
 import React from 'react';
 import {
   MousePointer,
+  Edit3,
   Type,
   Image as ImageIcon,
   Highlighter,
@@ -19,6 +20,7 @@ export const ToolRibbon: React.FC = () => {
 
   const tools: Array<{ id: ToolType; label: string; shortcut: string; icon: React.ReactNode }> = [
     { id: 'select', label: 'Select Object', shortcut: 'V', icon: <MousePointer className="w-3.5 h-3.5" /> },
+    { id: 'edit_text', label: 'Edit Text', shortcut: 'E', icon: <Edit3 className="w-3.5 h-3.5" /> },
     { id: 'text', label: 'Add Text Box', shortcut: 'T', icon: <Type className="w-3.5 h-3.5" /> },
     { id: 'image', label: 'Insert Image', shortcut: '', icon: <ImageIcon className="w-3.5 h-3.5" /> },
     { id: 'highlight', label: 'Highlight Text', shortcut: 'H', icon: <Highlighter className="w-3.5 h-3.5" /> },

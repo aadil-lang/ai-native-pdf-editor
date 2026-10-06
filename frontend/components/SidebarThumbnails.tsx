@@ -82,7 +82,7 @@ export const SidebarThumbnails: React.FC = () => {
         {document.pages.map((page) => {
           const pNum = page.page_number;
           const isActive = activePage === pNum;
-          const imgUrl = getPageImageUrl(document.id, pNum, 0.35);
+          const imgUrl = getPageImageUrl(document.id, pNum, 0.35, document.current_revision_index);
 
           return (
             <div

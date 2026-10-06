@@ -39,8 +39,12 @@ def get_page_image(doc_id: str, page_number: int, zoom: float = 1.5, db: Session
         raise HTTPException(status_code=404, detail="Revision not found.")
 
     try:
-        img_bytes = PDFExtractor.render_page_image(rev.filepath, page_number, zoom=zoom)
-        return Response(content=img_bytes, media_type="image/png")
+        img_bytes = PDFExtractor.render_page_image(rev.filepath, page_number, zoom=zoom, format="jpeg")
+        return Response(
+            content=img_bytes,
+            media_type="image/jpeg",
+            headers={"Cache-Control": "public, max-age=86400"}
+        )
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Failed to render page: {str(e)}")
 

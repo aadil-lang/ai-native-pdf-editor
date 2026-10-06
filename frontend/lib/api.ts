@@ -57,9 +57,10 @@ export async function getDocument(docId: string, revision?: number): Promise<PDF
   return res.json();
 }
 
-export function getPageImageUrl(docId: string, pageNumber: number, zoom: number = 1.5): string {
+export function getPageImageUrl(docId: string, pageNumber: number, zoom: number = 1.5, revision?: number): string {
   const baseUrl = getApiBaseUrl();
-  return `${baseUrl}/documents/${docId}/pages/${pageNumber}/image?zoom=${zoom}&t=${Date.now()}`;
+  const revParam = revision !== undefined ? `&rev=${revision}` : '';
+  return `${baseUrl}/documents/${docId}/pages/${pageNumber}/image?zoom=${zoom}${revParam}`;
 }
 
 export async function getPageText(docId: string, pageNumber: number) {

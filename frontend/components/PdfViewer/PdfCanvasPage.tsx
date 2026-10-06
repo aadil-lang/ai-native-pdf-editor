@@ -5,6 +5,8 @@ import { PDFPage } from '@/types/pdf';
 import { getPageImageUrl } from '@/lib/api';
 import { EditingOverlay } from './EditingOverlay';
 
+import { usePdfStore } from '@/stores/usePdfStore';
+
 interface PdfCanvasPageProps {
   documentId: string;
   page: PDFPage;
@@ -20,10 +22,11 @@ export const PdfCanvasPage: React.FC<PdfCanvasPageProps> = ({
   isActive,
   onOpenSignature,
 }) => {
+  const { document } = usePdfStore();
   const scaledWidth = page.width * zoom;
   const scaledHeight = page.height * zoom;
 
-  const imageUrl = getPageImageUrl(documentId, page.page_number, zoom * 1.5);
+  const imageUrl = getPageImageUrl(documentId, page.page_number, zoom * 1.5, document?.current_revision_index);
 
   return (
     <div
