@@ -1,4 +1,8 @@
 {
   "name": "paperforge",
-  "pages_build_output_dir": "frontend/out"
+  "compatibility_date": "2026-10-01",
+  "pages_build_output_dir": "./frontend/out",
+  "assets": {
+    "directory": "./frontend/out"
+  }
 }
