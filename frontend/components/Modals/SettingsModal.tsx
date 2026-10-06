@@ -116,7 +116,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
                 <label className="block font-semibold text-gray-700 mb-1">Model Name</label>
                 <input
                   type="text"
-                  placeholder="gemini-2.5-flash"
+                  placeholder="gemini-3.5-flash-lite"
                   value={modelName}
                   onChange={(e) => setModelName(e.target.value)}
                   className="w-full p-2 bg-white border border-gray-200 rounded-lg text-xs text-gray-900 focus:outline-none focus:border-indigo-500"
