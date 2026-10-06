@@ -96,6 +96,9 @@ class DocumentService:
         if not success:
             return {"success": False, "errors": ["Failed to apply PDF modifications"]}
 
+        # Sync new revision file to Cloudflare R2 if configured
+        StorageService.upload_file(new_filepath, f"{doc_id}/revision_{new_rev_index}.pdf")
+
         # Re-extract document to update page_count & current revision
         new_extracted = PDFExtractor.extract_document(new_filepath, doc_id, db_doc.filename, current_revision=new_rev_index)
 
