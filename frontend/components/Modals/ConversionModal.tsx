@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { X, FileOutput, Check, Download, RefreshCw } from 'lucide-react';
 import { usePdfStore } from '@/stores/usePdfStore';
+import { convertDocument } from '@/lib/api';
 
 interface ConversionModalProps {
   isOpen: boolean;
@@ -20,22 +21,7 @@ export const ConversionModal: React.FC<ConversionModalProps> = ({ isOpen, onClos
   const handleConvert = async () => {
     setIsConverting(true);
     try {
-      const formData = new FormData();
-      formData.append('target_format', targetFormat);
-      formData.append('mode', mode);
-
-      const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
-      const res = await fetch(`${API_BASE}/convert/document/${document.id}`, {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.detail || 'Conversion failed');
-      }
-
-      const blob = await res.blob();
+      const blob = await convertDocument(document.id, targetFormat, mode);
       const url = window.URL.createObjectURL(blob);
       const a = window.document.createElement('a');
       a.href = url;
